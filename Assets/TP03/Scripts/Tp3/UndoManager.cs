@@ -22,7 +22,7 @@ public class UndoManager : MonoBehaviour
     void MovePlayer()
     {
         SavePosition();
-        player.position += new Vector3(1, 0, 0);
+        player.position += new Vector3(10, 0, 0);
         Debug.Log($"Jugador movido a: {player.position}");
         UpdateUI();
     }
