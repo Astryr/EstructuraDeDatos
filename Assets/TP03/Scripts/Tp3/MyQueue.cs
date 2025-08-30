@@ -5,7 +5,7 @@ using System;
 
 public class MyQueue<T>
 {
-    private List<T> items = new List<T>();
+    private SimpleList<T> items = new SimpleList<T>();
 
     public int Count => items.Count;
 
@@ -15,7 +15,7 @@ public class MyQueue<T>
     {
         if (items.Count == 0) throw new InvalidOperationException("Queue is empty.");
         T item = items[0];
-        items.RemoveAt(0);
+        items.Remove(item);
         return item;
     }
 
@@ -27,16 +27,25 @@ public class MyQueue<T>
 
     public void Clear() => items.Clear();
 
-    public T[] ToArray() => items.ToArray();
+    public T[] ToArray()
+    {
+        T[] array = new T[items.Count];
+        for (int i = 0; i < items.Count; i++)
+            array[i] = items[i];
+        return array;
+    }
 
-    public override string ToString() => string.Join(", ", items);
+    public override string ToString()
+    {
+        return items.ToString();
+    }
 
     public bool TryDequeue(out T item)
     {
         if (items.Count > 0)
         {
             item = items[0];
-            items.RemoveAt(0);
+            items.Remove(item);
             return true;
         }
         item = default;
