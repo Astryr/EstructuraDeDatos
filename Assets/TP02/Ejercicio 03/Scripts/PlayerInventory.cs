@@ -25,7 +25,7 @@ public class PlayerInventory : MonoBehaviour
         else
             items[item.ID] = 1;
 
-        UpdateInventoryUI(FindObjectOfType<StoreManager>().storeItems);
+        UpdateInventoryUI(Object.FindFirstObjectByType<StoreManager>().storeItems);
     }
 
     public void SellItem(Item item)
@@ -35,13 +35,14 @@ public class PlayerInventory : MonoBehaviour
             items[item.ID]--;
             money += item.Price;
             Debug.Log($"Vendiste: {item.Name}");
-            UpdateInventoryUI(FindObjectOfType<StoreManager>().storeItems);
+            UpdateInventoryUI(Object.FindFirstObjectByType<StoreManager>().storeItems);
         }
         else
         {
             Debug.Log("No tienes ese ítem para vender.");
         }
     }
+
 
     public void UpdateInventoryUI(Dictionary<int, Item> storeItems)
     {
