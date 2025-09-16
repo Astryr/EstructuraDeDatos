@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class StoreItemButtonUI : MonoBehaviour
+public class StoreItemButtonUI : MonoBehaviour, IPointerClickHandler
 {
     public Image icon;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI priceText;
-
     private Item itemData;
     private StoreManager store;
 
@@ -22,13 +22,19 @@ public class StoreItemButtonUI : MonoBehaviour
         if (icon != null) icon.sprite = item.Icon;
         if (nameText != null) nameText.text = item.Name;
         if (priceText != null) priceText.text = $"${item.Price}";
-        GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
-        GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnClick);
     }
 
-    public void OnClick()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        store.BuyItem(itemData);
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            store.BuyItem(itemData);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            store.SellItem(itemData);
+        }
     }
 }
+
 

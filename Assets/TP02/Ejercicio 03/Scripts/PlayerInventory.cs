@@ -9,6 +9,9 @@ public class PlayerInventory : MonoBehaviour
     public Dictionary<int, int> items = new Dictionary<int, int>();
     public TextMeshProUGUI moneyText;
 
+    public GameObject inventoryItemPrefab;
+    public Transform inventoryPanel;
+
     void Update()
     {
         if (moneyText != null)
@@ -21,6 +24,8 @@ public class PlayerInventory : MonoBehaviour
             items[item.ID]++;
         else
             items[item.ID] = 1;
+
+        UpdateInventoryUI(FindObjectOfType<StoreManager>().storeItems);
     }
 
     public void SellItem(Item item)
@@ -30,7 +35,29 @@ public class PlayerInventory : MonoBehaviour
             items[item.ID]--;
             money += item.Price;
             Debug.Log($"Vendiste: {item.Name}");
+            UpdateInventoryUI(FindObjectOfType<StoreManager>().storeItems);
+        }
+        else
+        {
+            Debug.Log("No tienes ese ítem para vender.");
+        }
+    }
+
+    public void UpdateInventoryUI(Dictionary<int, Item> storeItems)
+    {
+        foreach (Transform child in inventoryPanel) Destroy(child.gameObject);
+
+        foreach (var kvp in items)
+        {
+            if (kvp.Value > 0 && storeItems.ContainsKey(kvp.Key))
+            {
+                GameObject itemObj = Instantiate(inventoryItemPrefab, inventoryPanel);
+                InventoryItemUI itemUI = itemObj.GetComponent<InventoryItemUI>();
+                itemUI.Setup(storeItems[kvp.Key], kvp.Value);
+            }
         }
     }
 }
+
+
 
