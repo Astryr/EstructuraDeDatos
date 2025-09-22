@@ -31,6 +31,7 @@ public class TesterList : MonoBehaviour
             string[] parts = inputField.text.Split(',');
             for (int i = 0; i < parts.Length; i++)
                 parts[i] = parts[i].Trim();
+
             myList.AddRange(parts);
             inputField.text = "";
             UpdateDisplay();
@@ -44,6 +45,7 @@ public class TesterList : MonoBehaviour
             bool removed = myList.Remove(inputField.text);
             if (!removed)
                 Debug.Log("Elemento no encontrado en la lista.");
+
             inputField.text = "";
             UpdateDisplay();
         }
