@@ -94,4 +94,54 @@ public class SimpleList<T> : ISimpleList<T>
         return string.Join(", ", arrStr);
     }
 
+    public void BubbleSort()
+    {
+        for (int i = 0; i < count - 1; i++)
+        {
+            for (int j = 0; j < count - i - 1; j++)
+            {
+                if (((IComparable<T>)items[j]).CompareTo(items[j + 1]) > 0)
+                {
+                    T temp = items[j];
+                    items[j] = items[j + 1];
+                    items[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public void SelectionSort()
+    {
+        for (int i = 0; i < count - 1; i++)
+        {
+            int minIdx = i;
+            for (int j = i + 1; j < count; j++)
+            {
+                if (((IComparable<T>)items[j]).CompareTo(items[minIdx]) < 0)
+                    minIdx = j;
+            }
+            if (minIdx != i)
+            {
+                T temp = items[i];
+                items[i] = items[minIdx];
+                items[minIdx] = temp;
+            }
+        }
+    }
+
+    public void InsertionSort()
+    {
+        for (int i = 1; i < count; i++)
+        {
+            T key = items[i];
+            int j = i - 1;
+            while (j >= 0 && ((IComparable<T>)items[j]).CompareTo(key) > 0)
+            {
+                items[j + 1] = items[j];
+                j--;
+            }
+            items[j + 1] = key;
+        }
+    }
+
 }
