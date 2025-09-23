@@ -1,19 +1,18 @@
 using System;
 using UnityEngine;
 
-public class SimpleList<T> : ISimpleList<T>
+public class SimpleList<T>
 {
-    private T[] items;   // Array interno
-    private int count;   // Cantidad de elementos actuales
+    private T[] items;
+    private int count;
 
-    public SimpleList(int capacity = 1) // Capacidad inicial por defecto
+    public SimpleList(int capacity = 1)
     {
         if (capacity <= 0) capacity = 1;
         items = new T[capacity];
         count = 0;
     }
 
-    // Indexador
     public T this[int index]
     {
         get
@@ -35,8 +34,7 @@ public class SimpleList<T> : ISimpleList<T>
     public void Add(T item)
     {
         EnsureCapacity();
-        items[count] = item;
-        count++;
+        items[count++] = item;
     }
 
     public void AddRange(T[] collection)
@@ -58,10 +56,33 @@ public class SimpleList<T> : ISimpleList<T>
                 items[i] = items[i + 1];
             }
             count--;
-            items[count] = default; // Limpia la referencia
+            items[count] = default;
             return true;
         }
         return false;
+    }
+
+    public void RemoveAt(int index)
+    {
+        if (index < 0 || index >= count) return;
+        for (int i = index; i < count - 1; i++)
+        {
+            items[i] = items[i + 1];
+        }
+        count--;
+        items[count] = default;
+    }
+
+    public void Insert(int index, T item)
+    {
+        if (index < 0 || index > count) return;
+        EnsureCapacity();
+        for (int i = count; i > index; i--)
+        {
+            items[i] = items[i - 1];
+        }
+        items[index] = item;
+        count++;
     }
 
     public void Clear()
@@ -100,7 +121,7 @@ public class SimpleList<T> : ISimpleList<T>
         {
             for (int j = 0; j < count - i - 1; j++)
             {
-                if (((IComparable<T>)items[j]).CompareTo(items[j + 1]) > 0)
+                if (((IComparable)items[j]).CompareTo(items[j + 1]) > 0)
                 {
                     T temp = items[j];
                     items[j] = items[j + 1];
@@ -117,7 +138,7 @@ public class SimpleList<T> : ISimpleList<T>
             int minIdx = i;
             for (int j = i + 1; j < count; j++)
             {
-                if (((IComparable<T>)items[j]).CompareTo(items[minIdx]) < 0)
+                if (((IComparable)items[j]).CompareTo(items[minIdx]) < 0)
                     minIdx = j;
             }
             if (minIdx != i)
@@ -135,7 +156,7 @@ public class SimpleList<T> : ISimpleList<T>
         {
             T key = items[i];
             int j = i - 1;
-            while (j >= 0 && ((IComparable<T>)items[j]).CompareTo(key) > 0)
+            while (j >= 0 && ((IComparable)items[j]).CompareTo(key) > 0)
             {
                 items[j + 1] = items[j];
                 j--;
@@ -143,5 +164,4 @@ public class SimpleList<T> : ISimpleList<T>
             items[j + 1] = key;
         }
     }
-
 }

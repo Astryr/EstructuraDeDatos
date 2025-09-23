@@ -2,7 +2,6 @@ using System;
 
 namespace MyLinkedList
 {
-
     public class MyNode<T>
     {
         public T Data;
@@ -12,21 +11,11 @@ namespace MyLinkedList
         public MyNode(T data)
         {
             Data = data;
-            Next = null;
-            Previous = null;
         }
 
-        public override string ToString()
-        {
-            return Data != null ? Data.ToString() : "null";
-        }
-
-        public bool IsEquals(T value)
-        {
-            return Data.Equals(value);
-        }
+        public override string ToString() => Data?.ToString() ?? "null";
+        public bool IsEquals(T value) => Data.Equals(value);
     }
-
 
     public class MyList<T>
     {
@@ -49,10 +38,7 @@ namespace MyLinkedList
         {
             MyNode<T> newNode = new MyNode<T>(value);
             if (root == null)
-            {
-                root = newNode;
-                tail = newNode;
-            }
+                root = tail = newNode;
             else
             {
                 tail.Next = newNode;
@@ -100,8 +86,7 @@ namespace MyLinkedList
 
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
-
+            if (index < 0 || index >= Count) return;
             MyNode<T> current = root;
             for (int i = 0; i < index; i++) current = current.Next;
 
@@ -120,8 +105,7 @@ namespace MyLinkedList
 
         public void Insert(int index, T value)
         {
-            if (index < 0 || index > Count) throw new IndexOutOfRangeException();
-
+            if (index < 0 || index > Count) return;
             MyNode<T> newNode = new MyNode<T>(value);
 
             if (index == Count)
@@ -166,6 +150,68 @@ namespace MyLinkedList
             result += "]";
             return result;
         }
+
+        private void SwapData(MyNode<T> a, MyNode<T> b)
+        {
+            T temp = a.Data;
+            a.Data = b.Data;
+            b.Data = temp;
+        }
+
+        public void BubbleSort()
+        {
+            if (Count < 2 || !(root.Data is IComparable<T>)) return;
+            for (int i = 0; i < Count - 1; i++)
+            {
+                MyNode<T> current = root;
+                while (current != null && current.Next != null)
+                {
+                    if (((IComparable<T>)current.Data).CompareTo(current.Next.Data) > 0)
+                        SwapData(current, current.Next);
+                    current = current.Next;
+                }
+            }
+        }
+
+        public void SelectionSort()
+        {
+            if (Count < 2 || !(root.Data is IComparable<T>)) return;
+            MyNode<T> current = root;
+            while (current != null)
+            {
+                MyNode<T> min = current;
+                MyNode<T> runner = current.Next;
+                while (runner != null)
+                {
+                    if (((IComparable<T>)runner.Data).CompareTo(min.Data) < 0)
+                        min = runner;
+                    runner = runner.Next;
+                }
+                if (min != current)
+                    SwapData(current, min);
+                current = current.Next;
+            }
+        }
+
+        public void InsertionSort()
+        {
+            if (Count < 2 || !(root.Data is IComparable<T>)) return;
+            MyNode<T> current = root.Next;
+            while (current != null)
+            {
+                T key = current.Data;
+                MyNode<T> mover = current.Previous;
+                while (mover != null && ((IComparable<T>)mover.Data).CompareTo(key) > 0)
+                {
+                    mover.Next.Data = mover.Data;
+                    mover = mover.Previous;
+                }
+                if (mover != null)
+                    mover.Next.Data = key;
+                else
+                    root.Data = key;
+                current = current.Next;
+            }
+        }
     }
 }
-

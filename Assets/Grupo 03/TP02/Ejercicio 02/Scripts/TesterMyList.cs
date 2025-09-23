@@ -93,6 +93,24 @@ public class TesterMyList : MonoBehaviour
         UpdateDisplay();
     }
 
+    public void SortBubble()
+    {
+        myList.BubbleSort();
+        UpdateDisplay();
+    }
+
+    public void SortSelection()
+    {
+        myList.SelectionSort();
+        UpdateDisplay();
+    }
+
+    public void SortInsertion()
+    {
+        myList.InsertionSort();
+        UpdateDisplay();
+    }
+
     private void UpdateDisplay()
     {
         displayText.text = $"Lista ({myList.Count}): {myList}";
