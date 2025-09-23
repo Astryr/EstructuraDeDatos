@@ -6,7 +6,34 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Grupo 03/Menu Principal/Scenes/MenuPrincipal.unity
+    guid: e10c710dec9f12149b03873f42af3936
+  - enabled: 1
     path: Assets/Grupo 03/TP01/Ejercicio 01/Scenes/Ejercicio 01.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Grupo 03/TP02/Ejercicio 02/Scenes/Ejercicio 02.unity
+    guid: c887c51787a578a439d2c77f85f36d8b
+  - enabled: 1
+    path: Assets/Grupo 03/TP02/Ejercicio 03/Scenes/Ejercicio 03.unity
+    guid: ec32f06e101c8004ab4a2ada4cc56724
+  - enabled: 1
+    path: Assets/Grupo 03/TP03/Ejercicio 04/Scenes/Ejercicio 04.unity
+    guid: 1e51662c910c7114a8507b9cbb9c03b3
+  - enabled: 1
+    path: Assets/Grupo 03/TP03/Ejercicio 05/Scenes/Ejercicio 05.unity
+    guid: 7cc2ba4d1d7951245a826fae1b63b378
+  - enabled: 1
+    path: Assets/Grupo 03/TP03/Ejercicio 06/Scenes/Ejercicio 06.unity
+    guid: 8959dae04e8e8bf4c832de3fa2c4c1f1
+  - enabled: 1
+    path: Assets/Grupo 03/TP03/Ejercicio 07/Scenes/Ejercicio 07.unity
+    guid: 36e1c7b71f0750e40bf56db8fea13dd8
+  - enabled: 1
+    path: Assets/Grupo 03/TP04/Ejercicio 08/Scenes/Ejercicio 08.unity
+    guid: f0b7daab2dda1744b938a8b204b8c7da
+  - enabled: 1
+    path: Assets/Grupo 03/TP05/Ejercicio 09/Scenes/Ejercicio 09.unity
+    guid: 4c86a18b16d84e247aeca1ce7e0a4238
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
