@@ -13,17 +13,26 @@ public class StoreManager : MonoBehaviour
     void Start()
     {
         AddItemToStore(new Item { ID = 1, Name = "Espada", Price = 100, Rarity = "Común", Type = "Arma" });
-        AddItemToStore(new Item { ID = 2, Name = "Poción", Price = 50, Rarity = "Común", Type = "Consumible" });
+        AddItemToStore(new Item { ID = 2, Name = "Poción de Salud", Price = 50, Rarity = "Común", Type = "Consumible" });
         AddItemToStore(new Item { ID = 3, Name = "Armadura", Price = 200, Rarity = "Rara", Type = "Armadura" });
+        AddItemToStore(new Item { ID = 4, Name = "Escudo", Price = 300, Rarity = "Rara", Type = "Armadura" });
+        AddItemToStore(new Item { ID = 5, Name = "Daga", Price = 120, Rarity = "Común", Type = "Arma" });
+        AddItemToStore(new Item { ID = 6, Name = "Casco", Price = 100, Rarity = "Rara", Type = "Armadura" });
+        AddItemToStore(new Item { ID = 7, Name = "Botas", Price = 50, Rarity = "Común", Type = "Armadura" });
+        AddItemToStore(new Item { ID = 8, Name = "Lanza", Price = 300, Rarity = "Rara", Type = "Arma" });
+        AddItemToStore(new Item { ID = 9, Name = "Varita", Price = 150, Rarity = "Rara", Type = "Arma" });
+        AddItemToStore(new Item { ID = 10, Name = "Poción de Veneno", Price = 70, Rarity = "Común", Type = "Consumible" });
 
         GenerateUI();
     }
 
     void AddItemToStore(Item item)
     {
+        item.Price = LoadItemPrice(item.ID, item.Price);
         if (!storeItems.ContainsKey(item.ID))
             storeItems.Add(item.ID, item);
     }
+
 
     void GenerateUI()
     {
@@ -42,6 +51,8 @@ public class StoreManager : MonoBehaviour
         {
             player.money -= item.Price;
             player.AddItem(item);
+            item.Price = Mathf.RoundToInt(item.Price * 1.10f); // Aumenta 10%
+            SaveItemPrice(item); // Guardar en PlayerPrefs
             Debug.Log($"Compraste: {item.Name}");
         }
         else
@@ -53,7 +64,20 @@ public class StoreManager : MonoBehaviour
     public void SellItem(Item item)
     {
         player.SellItem(item);
+        item.Price = Mathf.RoundToInt(item.Price * 0.90f); // Reduce 10%
+        SaveItemPrice(item); // Guardar en PlayerPrefs
     }
+    void SaveItemPrice(Item item)
+    {
+        PlayerPrefs.SetInt("ItemPrice_" + item.ID, item.Price);
+        PlayerPrefs.Save();
+    }
+
+    int LoadItemPrice(int itemID, int defaultPrice)
+    {
+        return PlayerPrefs.GetInt("ItemPrice_" + itemID, defaultPrice);
+    }
+
 
     public void SortItems(string criteria)
     {
