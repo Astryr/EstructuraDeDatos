@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// ----------------- Nodo AVL -----------------
+// NODO
 public class MyAVLNode : MyABBNode
 {
     public int Height;
@@ -14,14 +14,14 @@ public class MyAVLNode : MyABBNode
     }
 }
 
-// ----------------- AVL Tree -----------------
+// ARBOL
 public class MyAVLTree : MyABBTree
 {
     public new MyAVLNode Root { get; private set; }
 
     public MyAVLTree(GameObject prefab) : base(prefab) { }
 
-    // ----------------- Insert con balance -----------------
+    // INSERT
     public void InsertAVL(int value)
     {
         Root = InsertRecursiveAVL(Root, value);
@@ -41,31 +41,31 @@ public class MyAVLTree : MyABBTree
         else if (value > node.Value)
             node.Right = InsertRecursiveAVL((MyAVLNode)node.Right, value);
         else
-            return node; // No se permiten duplicados
+            return node; // NO DUPLICADOS
 
-        // Actualizar altura
+        // ALTURA
         node.Height = 1 + Math.Max(GetHeight((MyAVLNode)node.Left), GetHeight((MyAVLNode)node.Right));
 
-        // Obtener factor de balance
+        // BALANCE
         int balance = GetBalanceFactor(node);
 
-        // ----------------- Rotaciones -----------------
-        // Rotación derecha
+        
+        // ROTA DERECHA
         if (balance > 1 && value < node.Left.Value)
             return RightRotate(node);
 
-        // Rotación izquierda
+        // ROTA IZQUIERDA
         if (balance < -1 && value > node.Right.Value)
             return LeftRotate(node);
 
-        // Rotación izquierda-derecha
+        // ROTA IZQ - DER
         if (balance > 1 && value > node.Left.Value)
         {
             node.Left = LeftRotate((MyAVLNode)node.Left);
             return RightRotate(node);
         }
 
-        // Rotación derecha-izquierda
+        // ROTA DER - IZQ
         if (balance < -1 && value < node.Right.Value)
         {
             node.Right = RightRotate((MyAVLNode)node.Right);
@@ -75,17 +75,17 @@ public class MyAVLTree : MyABBTree
         return node;
     }
 
-    // ----------------- Rotaciones -----------------
+
     private MyAVLNode RightRotate(MyAVLNode y)
     {
         MyAVLNode x = (MyAVLNode)y.Left;
         MyAVLNode T2 = (MyAVLNode)x.Right;
 
-        // Rotación
+        // ROTACION
         x.Right = y;
         y.Left = T2;
 
-        // Actualizar alturas
+        // ALTURAS
         y.Height = 1 + Math.Max(GetHeight((MyAVLNode)y.Left), GetHeight((MyAVLNode)y.Right));
         x.Height = 1 + Math.Max(GetHeight((MyAVLNode)x.Left), GetHeight((MyAVLNode)x.Right));
 
@@ -97,18 +97,18 @@ public class MyAVLTree : MyABBTree
         MyAVLNode y = (MyAVLNode)x.Right;
         MyAVLNode T2 = (MyAVLNode)y.Left;
 
-        // Rotación
+        // ROTACION
         y.Left = x;
         x.Right = T2;
 
-        // Actualizar alturas
+        // ALTURAS
         x.Height = 1 + Math.Max(GetHeight((MyAVLNode)x.Left), GetHeight((MyAVLNode)x.Right));
         y.Height = 1 + Math.Max(GetHeight((MyAVLNode)y.Left), GetHeight((MyAVLNode)y.Right));
 
         return y;
     }
 
-    // ----------------- Funciones de altura y balance -----------------
+   
     private int GetHeight(MyAVLNode node)
     {
         return node != null ? node.Height : 0;
@@ -120,7 +120,7 @@ public class MyAVLTree : MyABBTree
         return GetHeight((MyAVLNode)node.Left) - GetHeight((MyAVLNode)node.Right);
     }
 
-    // ----------------- Sobreescribir InOrder para AVL -----------------
+    // INORDER
     public void InOrderAVL(MyAVLNode node)
     {
         if (node == null) return;

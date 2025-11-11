@@ -63,7 +63,7 @@ public class PlanetSelector : MonoBehaviour
         AddEdgeWithLine(venus, tierra);
         AddEdgeWithLine(pluton, neptuno);
 
-        // Ahora dibujamos todas esas aristas con el color por defecto
+        // Dibujar todas las aristas del grafo
         DrawAllGraphEdges();
     }
 
@@ -159,7 +159,6 @@ public class PlanetSelector : MonoBehaviour
         selectedPlanets.Clear();
     }
 
-    // Helper para borrar las líneas de highlight
     private void ClearHighlightLines()
     {
         foreach (var line in highlightLines)

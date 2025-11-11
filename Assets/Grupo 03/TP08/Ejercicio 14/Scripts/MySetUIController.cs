@@ -35,7 +35,7 @@ public class MySetUIController : MonoBehaviour
 
     void Start()
     {
-        // Create Sets according to the selected implementation 
+        
         if (useArrayImplementation)
         {
             setA = new MySetArray<int>();
@@ -47,24 +47,24 @@ public class MySetUIController : MonoBehaviour
             setB = new MySetList<int>();
         }
 
-        // Asign listeners for SetA Buttons
+        // SET A
         addAButton.onClick.AddListener(() => OnAddClicked(setA, inputA, outputA));
         removeAButton.onClick.AddListener(() => OnRemoveClicked(setA, inputA, outputA));
         clearAButton.onClick.AddListener(() => OnClearClicked(setA, outputA));
         showAButton.onClick.AddListener(() => OnShowClicked(setA, outputA, "A"));
 
-        // Asign listeners for SetB Buttons
+        // SET B
         addBButton.onClick.AddListener(() => OnAddClicked(setB, inputB, outputB));
         removeBButton.onClick.AddListener(() => OnRemoveClicked(setB, inputB, outputB));
         clearBButton.onClick.AddListener(() => OnClearClicked(setB, outputB));
         showBButton.onClick.AddListener(() => OnShowClicked(setB, outputB, "B"));
 
-        // Asign listeners for operations
+        // OPERACIONES
         unionButton.onClick.AddListener(OnUnionClicked);
         intersectButton.onClick.AddListener(OnIntersectClicked);
         differenceButton.onClick.AddListener(OnDifferenceClicked);
 
-        // Initialize texts
+        // TEXTOS
         UpdateOutput(outputA, setA);
         UpdateOutput(outputB, setB);
         outputResult.text = "Resultado: { }";

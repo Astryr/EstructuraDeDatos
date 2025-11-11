@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class AVLTester : MonoBehaviour
 {
-    // 1. La hacemos pública
+    
     public AVLVisualizer visualizer;
 
     void Start()
     {
-        // 2. Ya no buscamos el objeto aquí, se asigna en el Inspector
+       
 
-        // Insertar nodos de prueba
+        // NODO DE PRUEBA (CONSIGNA)
         int[] testValues = { 10, 20, 5, 15, 25 };
 
         if (visualizer != null)

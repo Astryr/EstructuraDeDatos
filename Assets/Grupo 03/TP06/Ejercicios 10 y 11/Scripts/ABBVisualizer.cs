@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;  // para TextMeshPro
+using TMPro; 
 using System.Collections.Generic;
 
 public class ABBVisualizer : MonoBehaviour
@@ -10,23 +10,23 @@ public class ABBVisualizer : MonoBehaviour
 
     void Start()
     {
-        // ----------------- Crear ABB -----------------
+        // CREA ABB
         tree = new MyABBTree(nodePrefab);
 
         int[] myArray = { 20, 10, 1, 26, 35, 40, 18, 12, 15, 14, 30, 23 };
         foreach (int v in myArray)
             tree.Insert(v);
 
-        // ----------------- Posicionar nodos en pantalla -----------------
+        // NODOS
         float xMin = -10f;
         float xMax = 10f;
         float yStart = 4f;
         PositionNode(tree.Root, xMin, xMax, yStart);
 
-        // ----------------- Dibujar líneas -----------------
+        // LINEAS
         DrawLines(tree.Root);
 
-        // ----------------- Demostración en consola -----------------
+        // MUESTRA CONSOLA
         Debug.Log("Altura del árbol: " + tree.GetHeight(tree.Root));
         Debug.Log("Factor de balance (raíz): " + tree.GetBalanceFactor(tree.Root));
 
@@ -36,7 +36,7 @@ public class ABBVisualizer : MonoBehaviour
         tree.LevelOrder(tree.Root);
     }
 
-    // ----------------- Posicionamiento ABB -----------------
+    // POSICION ABB
     private void PositionNode(MyABBNode node, float xMin, float xMax, float y)
     {
         if (node == null) return;
@@ -52,7 +52,7 @@ public class ABBVisualizer : MonoBehaviour
         PositionNode(node.Right, x, xMax, y + yOffset);
     }
 
-    // ----------------- Dibujar líneas -----------------
+    // DIBUJA LINEAS
     private void DrawLines(MyABBNode node)
     {
         if (node == null) return;

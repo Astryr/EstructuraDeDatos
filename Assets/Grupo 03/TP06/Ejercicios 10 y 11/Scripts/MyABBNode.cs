@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// ----------------- Nodo ABB -----------------
+// NODO
 public class MyABBNode
 {
     public int Value;
@@ -18,7 +18,7 @@ public class MyABBNode
     }
 }
 
-// ----------------- ABB Tree -----------------
+// ARBOL
 public class MyABBTree
 {
     public MyABBNode Root { get; private set; }
@@ -31,7 +31,7 @@ public class MyABBTree
         nodePrefab = prefab;
     }
 
-    // ----------------- Insert -----------------
+    // INSERT
     public void Insert(int value)
     {
         Root = InsertRecursive(Root, value);
@@ -54,7 +54,7 @@ public class MyABBTree
         return node;
     }
 
-    // ----------------- Visualización de nodo -----------------
+    
     protected void CreateVisualNode(MyABBNode node)
     {
         if (nodePrefab == null) return;
@@ -68,21 +68,21 @@ public class MyABBTree
         nodeVisuals[node] = obj;
     }
 
-    // ----------------- Altura -----------------
+    // ALTURA
     public int GetHeight(MyABBNode node)
     {
         if (node == null) return 0;
         return 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
     }
 
-    // ----------------- Factor de balance -----------------
+    // BALANCE
     public int GetBalanceFactor(MyABBNode node)
     {
         if (node == null) return 0;
         return GetHeight(node.Left) - GetHeight(node.Right);
     }
 
-    // ----------------- Recorridos -----------------
+    // RECORRIDOS
     public void InOrder(MyABBNode node)
     {
         if (node == null) return;
