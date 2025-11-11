@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
+
 public class PlanetRandomizer : MonoBehaviour
 {
+    [Header("Referencias de Escena")]
     public RectTransform canvasRect;
     public PlanetNode[] planets;
     public RectTransform resultTextRect;
     public RectTransform checkPathButtonRect;
 
+  
+    public PlanetSelector planetSelector;
+   
+
+    [Header("Configuración de Posicionamiento")]
     private List<Vector2> usedPositions = new();
-    private float minDistanceBetweenPlanets = 100f;
+    public float minDistanceBetweenPlanets = 100f;
+    public float padding = 50f;
 
     void Start()
     {
@@ -21,14 +30,15 @@ public class PlanetRandomizer : MonoBehaviour
             planet.GetComponent<RectTransform>().anchoredPosition = randomPos;
             usedPositions.Add(randomPos);
         }
+
+        planetSelector.SetupAndDrawGraph();
+        
     }
 
     Vector2 GetSafeRandomPosition()
     {
-        float padding = 50f;
         Vector2 pos;
         int attempts = 0;
-
         Rect safeZone = GetCombinedSafeZone();
 
         do
@@ -62,7 +72,6 @@ public class PlanetRandomizer : MonoBehaviour
     {
         Vector2 textPos = resultTextRect.anchoredPosition;
         Vector2 textSize = resultTextRect.rect.size;
-
         Vector2 buttonPos = checkPathButtonRect.anchoredPosition;
         Vector2 buttonSize = checkPathButtonRect.rect.size;
 
