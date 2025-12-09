@@ -13,8 +13,6 @@ public class Node
         Y = y;
     }
 
-    // Sobrescribimos Equals y GetHashCode para que el Dictionary pueda comparar
-    // nodos por su valor (coordenadas) en lugar de por su referencia en memoria.
     public override bool Equals(object obj)
     {
         return obj is Node other && X == other.X && Y == other.Y;

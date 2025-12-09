@@ -27,10 +27,10 @@ public class Tile : MonoBehaviour
         this.y = y;
     }
 
-    // Modificado para aceptar un Color
     public void SetType(TileType newType, Color newColor)
     {
         this.type = newType;
-        spriteRenderer.color = newColor; // Asigna el color
+        if (spriteRenderer != null)
+            spriteRenderer.color = newColor;
     }
 }

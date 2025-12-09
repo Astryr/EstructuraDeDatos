@@ -19,13 +19,13 @@ public class GridManager : MonoBehaviour
     public Color exitColor = Color.red;
 
     [Header("Configuración de la UI")]
-    public TextMeshProUGUI solutionText; // Asegúrate de que sea TextMeshProUGUI
+    public TextMeshProUGUI solutionText;
 
     [Header("Configuración del Personaje")]
     public GameObject characterPrefab;
-    public float characterSpeed = 2f;
+    public float characterSpeed = 5f; 
 
-    // --- Variables Internas ---
+   
     private Tile[,] grid;
     private TileType currentTileType = TileType.Floor;
     private Node entryPoint = null;
@@ -33,11 +33,14 @@ public class GridManager : MonoBehaviour
     private Pathfinder pathfinder;
     private List<Node> currentPath;
     private GameObject characterInstance;
+    private bool isMoving = false;
 
     void Start()
     {
         pathfinder = new Pathfinder();
         GenerateGrid();
+        Camera.main.transform.position = new Vector3((float)gridWidth / 2 - 0.5f, (float)gridHeight / 2 - 0.5f, -10);
+        Camera.main.orthographicSize = Mathf.Max(gridWidth, gridHeight) / 2f + 1;
     }
 
     void Update()
@@ -57,9 +60,8 @@ public class GridManager : MonoBehaviour
                 newTileObject.name = $"Tile_{x}_{y}";
 
                 Tile tile = newTileObject.GetComponent<Tile>();
-                // Inicializamos todos como suelo por defecto
                 tile.Initialize(x, y, TileType.Floor);
-                tile.SetType(TileType.Floor, floorColor); // Le pasamos el color inicial
+                tile.SetType(TileType.Floor, floorColor);
                 grid[x, y] = tile;
             }
         }
@@ -67,9 +69,12 @@ public class GridManager : MonoBehaviour
 
     void HandlePaintingInput()
     {
-        if (Input.GetMouseButton(0))
+        
+        if (Input.GetMouseButton(0) && !isMoving)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            
             int x = Mathf.RoundToInt(mousePos.x);
             int y = Mathf.RoundToInt(mousePos.y);
 
@@ -85,31 +90,27 @@ public class GridManager : MonoBehaviour
         Tile tileToPaint = grid[x, y];
         if (tileToPaint.type == currentTileType) return;
 
+        
         if (currentTileType == TileType.Entrance)
         {
             if (entryPoint != null)
-            {
                 grid[entryPoint.X, entryPoint.Y].SetType(TileType.Floor, floorColor);
-            }
             entryPoint = new Node(x, y);
         }
         else if (currentTileType == TileType.Exit)
         {
             if (exitPoint != null)
-            {
                 grid[exitPoint.X, exitPoint.Y].SetType(TileType.Floor, floorColor);
-            }
             exitPoint = new Node(x, y);
         }
 
+        
         if (tileToPaint.type == TileType.Entrance) entryPoint = null;
         if (tileToPaint.type == TileType.Exit) exitPoint = null;
 
-        // Pasa el tipo Y el color correspondiente al tile
         tileToPaint.SetType(currentTileType, GetColorForType(currentTileType));
     }
 
-    // Helper para obtener el color correcto
     Color GetColorForType(TileType type)
     {
         switch (type)
@@ -117,56 +118,69 @@ public class GridManager : MonoBehaviour
             case TileType.Entrance: return entranceColor;
             case TileType.Exit: return exitColor;
             case TileType.Wall: return wallColor;
-            case TileType.Floor:
-            default: return floorColor;
+            case TileType.Floor: default: return floorColor;
         }
     }
 
-    // --- Métodos de UI (sin cambios) ---
     public void SelectEntrance() => currentTileType = TileType.Entrance;
     public void SelectExit() => currentTileType = TileType.Exit;
     public void SelectFloor() => currentTileType = TileType.Floor;
     public void SelectWall() => currentTileType = TileType.Wall;
+
     public void CheckForSolution()
     {
         if (entryPoint == null || exitPoint == null)
         {
-            solutionText.text = "Error: Debes colocar una ENTRADA y una SALIDA.";
+            solutionText.text = "Faltan Entrada (Azul) o Salida (Rojo)";
             return;
         }
+
+        
         currentPath = pathfinder.FindPath(grid, entryPoint, exitPoint);
-        if (currentPath != null)
+
+        if (currentPath != null && currentPath.Count > 0)
         {
-            solutionText.text = "¡Laberinto con solución!";
+            solutionText.text = $"¡Camino encontrado! Pasos: {currentPath.Count}";
         }
         else
         {
-            solutionText.text = "El laberinto no tiene solución.";
+            solutionText.text = "No hay solución posible.";
+            currentPath = null;
         }
     }
+
     public void StartCharacterMovement()
     {
-        if (currentPath != null)
+        if (currentPath != null && currentPath.Count > 0 && !isMoving)
         {
             if (characterInstance != null) Destroy(characterInstance);
+
+           
             characterInstance = Instantiate(characterPrefab, new Vector3(entryPoint.X, entryPoint.Y, -1), Quaternion.identity);
             StartCoroutine(MoveCharacterCoroutine());
         }
-        else
+        else if (currentPath == null)
         {
-            solutionText.text = "No se ha encontrado un camino para recorrer.";
+            solutionText.text = "Primero verifica si hay solución.";
         }
     }
+
     IEnumerator MoveCharacterCoroutine()
     {
+        isMoving = true;
         foreach (Node node in currentPath)
         {
-            Vector3 targetPosition = new Vector3(node.X, node.Y, -1);
+            Vector3 targetPosition = new Vector3(node.X, node.Y, -1); 
+
+            
             while (Vector3.Distance(characterInstance.transform.position, targetPosition) > 0.01f)
             {
                 characterInstance.transform.position = Vector3.MoveTowards(characterInstance.transform.position, targetPosition, Time.deltaTime * characterSpeed);
                 yield return null;
             }
+            characterInstance.transform.position = targetPosition; 
         }
+        isMoving = false;
+        solutionText.text = "¡Llegada!";
     }
 }
