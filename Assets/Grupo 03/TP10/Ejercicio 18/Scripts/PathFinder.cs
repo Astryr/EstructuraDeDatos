@@ -7,8 +7,7 @@ using UnityEngine;
 public class Pathfinder
 {
     public List<Node> FindPath(Tile[,] grid, Node startNode, Node endNode)
-    {
-        
+    { 
         Dictionary<Node, (Node previous, float cost)> table = new Dictionary<Node, (Node, float)>();
         List<Node> unvisited = new List<Node>();
 
