@@ -14,7 +14,6 @@ public class Pathfinder
         int width = grid.GetLength(0);
         int height = grid.GetLength(1);
 
-        
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -29,30 +28,24 @@ public class Pathfinder
             }
         }
 
-       
         if (!table.ContainsKey(startNode) || !table.ContainsKey(endNode)) return null;
 
-        
         table[startNode] = (null, 0);
 
         while (unvisited.Count > 0)
         {
-            
-            
+     
             unvisited.Sort((a, b) => table[a].cost.CompareTo(table[b].cost));
             Node currentNode = unvisited[0];
             unvisited.RemoveAt(0); 
 
-           
             if (float.IsPositiveInfinity(table[currentNode].cost)) break;
 
-            
             if (currentNode.Equals(endNode))
             {
                 return ReconstructPath(table, endNode);
             }
-
-            
+ 
             foreach (Node neighbor in GetNeighbors(currentNode, grid, width, height))
             {
                
@@ -82,7 +75,6 @@ public class Pathfinder
             int newX = node.X + dx[i];
             int newY = node.Y + dy[i];
 
-            
             if (newX >= 0 && newX < width && newY >= 0 && newY < height && grid[newX, newY].type != TileType.Wall)
             {
                 neighbors.Add(new Node(newX, newY));
@@ -91,7 +83,6 @@ public class Pathfinder
         return neighbors;
     }
 
-    
     private List<Node> ReconstructPath(Dictionary<Node, (Node previous, float cost)> table, Node endNode)
     {
         List<Node> path = new List<Node>();

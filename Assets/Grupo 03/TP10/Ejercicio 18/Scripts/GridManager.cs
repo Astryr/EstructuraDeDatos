@@ -25,7 +25,6 @@ public class GridManager : MonoBehaviour
     public GameObject characterPrefab;
     public float characterSpeed = 5f; 
 
-   
     private Tile[,] grid;
     private TileType currentTileType = TileType.Floor;
     private Node entryPoint = null;
@@ -73,8 +72,7 @@ public class GridManager : MonoBehaviour
         if (Input.GetMouseButton(0) && !isMoving)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            
+ 
             int x = Mathf.RoundToInt(mousePos.x);
             int y = Mathf.RoundToInt(mousePos.y);
 
@@ -90,7 +88,6 @@ public class GridManager : MonoBehaviour
         Tile tileToPaint = grid[x, y];
         if (tileToPaint.type == currentTileType) return;
 
-        
         if (currentTileType == TileType.Entrance)
         {
             if (entryPoint != null)
@@ -104,7 +101,6 @@ public class GridManager : MonoBehaviour
             exitPoint = new Node(x, y);
         }
 
-        
         if (tileToPaint.type == TileType.Entrance) entryPoint = null;
         if (tileToPaint.type == TileType.Exit) exitPoint = null;
 
@@ -135,7 +131,6 @@ public class GridManager : MonoBehaviour
             return;
         }
 
-        
         currentPath = pathfinder.FindPath(grid, entryPoint, exitPoint);
 
         if (currentPath != null && currentPath.Count > 0)
@@ -155,7 +150,6 @@ public class GridManager : MonoBehaviour
         {
             if (characterInstance != null) Destroy(characterInstance);
 
-           
             characterInstance = Instantiate(characterPrefab, new Vector3(entryPoint.X, entryPoint.Y, -1), Quaternion.identity);
             StartCoroutine(MoveCharacterCoroutine());
         }
